@@ -30,7 +30,7 @@ class _MlKitTestPageState extends State<MlKitTestPage> {
             children: [
               ImageUploadComponent(
                 editImageAfterPick: true,
-                compressImage: true,
+                compressImage: false,
                 saveFileCallback: (file) async {
                   await _imageUploadCallback(file);
                 },

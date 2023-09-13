@@ -98,7 +98,7 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
             onLoading: getImageFromGalleryLoading(),
             onResult: (file) async {
               if (file != null) {
-                saveFilePicked(file.path);
+                await saveFilePicked(file.path);
               }
             },
             onError: (error) => {},
@@ -206,7 +206,7 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => TakePictureScreen(cameras, (image) async {
-          saveFilePicked(await previewImage(image));
+          await saveFilePicked(await previewImage(image));
         }),
       ),
     );
@@ -238,8 +238,8 @@ class ImageUploadComponentState extends State<ImageUploadComponent> {
       var outImage = await compressImage(file.readAsBytesSync());
       file.writeAsBytesSync(outImage);
     }
-
     await widget.saveFileCallback?.call(file);
+    return;
   }
 
   Future<File?> cropImage(String? path) async {
