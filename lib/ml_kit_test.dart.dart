@@ -2,7 +2,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:image_painter/image_painter.dart';
 import 'package:ocr_test/image_resource_model.dart';
 import 'package:ocr_test/image_upload_component.dart';
 import 'package:ocr_test/loading_popup.dart';
@@ -16,8 +18,11 @@ class MlKitTestPage extends StatefulWidget {
 
 class _MlKitTestPageState extends State<MlKitTestPage> {
   final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+  final _imageKey = GlobalKey<ImagePainterState>();
 
   String _processedText = "Texto capturado";
+
+  File? _file;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +57,16 @@ class _MlKitTestPageState extends State<MlKitTestPage> {
               Expanded(
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
-                  child: _text(),
+                  // child: _text(),
+                  child: Visibility(
+                    visible: _file != null,
+                    child: ImagePainter.file(
+                      _file ?? File(""),
+                      key: _imageKey,
+                      scalable: true,
+                      height: MediaQuery.of(context).size.height * .7,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -91,6 +105,12 @@ class _MlKitTestPageState extends State<MlKitTestPage> {
   Future<RecognizedText> _processImage(File? file) async {
     if (file != null) {
       InputImage inputImage = InputImage.fromFile(file);
+      _file = file;
+      // ImagePainter.file(file, key: _imageKey);
+      // Uint8List? byteArray = await _imageKey.currentState?.exportImage();
+      // if (byteArray != null) {
+      //   _file = File.fromRawPath(byteArray);
+      // }
       return await textRecognizer.processImage(inputImage);
     } else {
       throw Exception("File is null");
