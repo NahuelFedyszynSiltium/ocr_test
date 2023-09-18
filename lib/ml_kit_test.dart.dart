@@ -1,13 +1,10 @@
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:image_painter/image_painter.dart';
-import 'package:ocr_test/image_resource_model.dart';
 import 'package:ocr_test/image_upload_component.dart';
 import 'package:ocr_test/loading_popup.dart';
+
+import 'image_painter.dart';
 
 class MlKitTestPage extends StatefulWidget {
   const MlKitTestPage({super.key});
@@ -65,6 +62,24 @@ class _MlKitTestPageState extends State<MlKitTestPage> {
                       key: _imageKey,
                       scalable: true,
                       height: MediaQuery.of(context).size.height * .7,
+                      customImagePainterList: [
+                        CustomImagePainterOption(
+                          color: Colors.red,
+                          widget: Container(
+                            height: 50,
+                            width: 50,
+                            color: Colors.red,
+                          ),
+                        ),
+                        CustomImagePainterOption(
+                          color: Colors.yellow,
+                          widget: Container(
+                            height: 50,
+                            width: 50,
+                            color: Colors.yellow,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
